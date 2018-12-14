@@ -146,6 +146,31 @@ anno <- na.omit(anno)
 rldTxi <- rlog(ddsTxi, blind=FALSE)
 pcaExplorer(dds=ddsTxi,annotation=anno,rlt=rldTxi)
 
+###MNDA boxplot  ENSG00000163563
+
+#normalized counts
+mnda_counts <- counts(ddsTxi['ENSG00000163563',], normalized = TRUE)
+m <- list(counts = as.numeric(mnda_counts), group = as.factor(samples$group))
+m <- as.tibble(m)
+p <- ggplot(m, aes(group, counts)) + geom_boxplot() + geom_jitter(width = 0.1)
+p <- p + labs(x = "Experimental Group", y = "Normalized Counts ", title = "Normalized Expression of MNDA")
+p <- p + scale_x_discrete(labels=c("00hn" = "PMN, 0hrs", "06hn" = "PMN, 6hrs",
+                                   "06hy" = "PMN+Hp, 6hrs", "24hn" = "PMN, 24hrs", "24hy" = "PMN+Hp, 24hrs"))
+p
+
+#rlog counts
+mnda_rld <- assay(rldTxi["ENSG00000163563",])
+m <- list(counts = as.numeric(mnda_rld), group = as.factor(samples$group))
+m <- as.tibble(m)
+p <- ggplot(m, aes(group, counts)) + geom_boxplot() + geom_jitter(width = 0.1)
+p <- p + labs(x = "Experimental Group", y = "Rlog Variance Stabilized Expression ")
+p
+
+########
+
+
+
+
 plotPCA(object = rldTxi, intgroup = c("infect","time"))
 
 ##############################################################################
