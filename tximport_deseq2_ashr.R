@@ -158,6 +158,16 @@ p <- p + scale_x_discrete(labels=c("00hn" = "PMN, 0hrs", "06hn" = "PMN, 6hrs",
                                    "06hy" = "PMN+Hp, 6hrs", "24hn" = "PMN, 24hrs", "24hy" = "PMN+Hp, 24hrs"))
 p
 
+
+traf1_counts <- counts(ddsTxi['ENSG00000056558',], normalized = TRUE)
+m <- list(counts = as.numeric(traf1_counts), group = as.factor(samples$group))
+m <- as.tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot() + geom_jitter(width = 0.1)
+q <- q + labs(x = "Experimental Group", y = "Normalized Counts ", title = "Normalized Expression of TRAF1")
+q <- q + scale_x_discrete(labels=c("00hn" = "PMN, 0hrs", "06hn" = "PMN, 6hrs",
+                                   "06hy" = "PMN+Hp, 6hrs", "24hn" = "PMN, 24hrs", "24hy" = "PMN+Hp, 24hrs"))
+q
+
 #rlog counts
 mnda_rld <- assay(rldTxi["ENSG00000163563",])
 m <- list(counts = as.numeric(mnda_rld), group = as.factor(samples$group))
@@ -323,8 +333,13 @@ pheatmap(apop_mat,
          cluster_cols=TRUE, 
          annotation_col=df,
          color = viridis(10),
-         fontsize = 7,
-         drop_levels = TRUE
+         fontsize = 9,
+         drop_levels = TRUE,
+         show_colnames = FALSE,
+         cutree_rows = 5,
+         treeheight_row = 20,
+         treeheight_col = 20,
+         fontsize_row = 14
          )
 
 
